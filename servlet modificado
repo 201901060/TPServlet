@@ -1,0 +1,49 @@
+package servlets;
+import java.io.IOException;
+import java.io.PrintWriter;
+import static java.lang.Integer.parseInt;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+public class Servlet1 extends HttpServlet {
+    protected float Fact(long x){
+        float f=1;
+        int i;
+        if(x>0){
+            for(i=1;i<=x;i++){
+                f*=i;
+            }
+        }else{
+            f=1;
+        }
+        return f;
+    }
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        long n=(long)parseInt((request.getParameter("n")));
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<h3><pre>n= " + n + "</pre></h3>");
+            long x, y, s;
+            for (x = 0; x <= n; x++) {
+                s = n - x;
+                out.print("<h3><pre>");
+                for (long i = 0; i < s; i++) {
+                    out.print("    ");
+                }
+                for (y = 0; y <= x; y++) {
+                    float r = (Fact(x) / (Fact(y) * Fact(x - y)));
+                    out.printf("%8.0f",r);
+                }
+                out.println("</pre></h3>");
+            }
+            out.println("</head>");
+            out.println("</html>");
+        }
+    }
+}
